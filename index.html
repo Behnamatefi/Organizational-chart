@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organizational Chart Explorer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.19.3/dist/xlsx.full.min.js" defer></script>
+    <script src="app.js" type="module" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="control-panel">
+        <div class="control-header">
+          <div class="data-actions">
+            <label class="ingest-button" for="file-input">
+              <span class="icon" aria-hidden="true">⬆️</span>
+              <span>Upload .xlsx</span>
+            </label>
+            <input type="file" accept=".xlsx,.xlsm" id="file-input" />
+            <button id="load-sample" type="button" class="secondary-button">Sample data</button>
+            <div class="link-field">
+              <input
+                type="url"
+                id="sheet-url"
+                placeholder="Paste Google Sheets link"
+                autocomplete="off"
+              />
+              <button id="load-sheet" type="button" class="secondary-button">Import</button>
+            </div>
+          </div>
+          <div class="view-switch" role="group" aria-label="View mode">
+            <button type="button" class="segmented-option" data-view-mode="manager">
+              Manager based
+            </button>
+            <button type="button" class="segmented-option" data-view-mode="tribe">
+              Tribe based
+            </button>
+          </div>
+          <button id="theme-toggle" type="button" class="tone-button" title="Toggle dark mode">
+            <span class="icon" aria-hidden="true">🌙</span>
+            <span class="sr-only">Toggle dark mode</span>
+          </button>
+        </div>
+        <div class="search-row">
+          <div class="search-bar">
+            <span class="icon" aria-hidden="true">🔍</span>
+            <input
+              type="search"
+              id="search-input"
+              placeholder="Search employees, tribes, squads, expertise, job levels or managers"
+              autocomplete="off"
+            />
+            <button id="clear-search" type="button" class="tone-button" title="Clear search">
+              <span aria-hidden="true">✕</span>
+              <span class="sr-only">Clear search</span>
+            </button>
+          </div>
+          <div
+            class="filter-row"
+            id="search-filter-group"
+            role="radiogroup"
+            aria-label="Search scope"
+          >
+            <button type="button" class="filter-chip" data-search-field="all" aria-pressed="true">
+              All
+            </button>
+            <button type="button" class="filter-chip" data-search-field="name">Employee</button>
+            <button type="button" class="filter-chip" data-search-field="tribe">Tribe</button>
+            <button type="button" class="filter-chip" data-search-field="squad">Squad</button>
+            <button type="button" class="filter-chip" data-search-field="expertise">Expertise</button>
+            <button type="button" class="filter-chip" data-search-field="level">Job level</button>
+            <button type="button" class="filter-chip" data-search-field="manager">Manager</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <div class="chart-shell">
+          <div class="chart-stage">
+            <div id="chart-container">
+              <div id="chart-content">
+                <div id="chart-zoom">
+                  <svg id="chart-links"></svg>
+                  <div id="chart-nodes"></div>
+                </div>
+              </div>
+            </div>
+            <div class="empty-state" id="empty-state">
+              <h2>Upload a spreadsheet to get started</h2>
+              <p>
+                Use the sample data or drop in your own file with columns for employee name, tribe,
+                squad, expertise, job level and manager name.
+              </p>
+            </div>
+          </div>
+          <div class="fab" id="fab">
+            <button class="fab-button" data-action="expand" title="Expand all">⤦</button>
+            <button class="fab-button" data-action="collapse" title="Collapse all">⤣</button>
+            <button class="fab-button" data-action="zoom-in" title="Zoom in">＋</button>
+            <button class="fab-button" data-action="zoom-out" title="Zoom out">−</button>
+            <button class="fab-button" data-action="zoom-fit" title="Zoom to fit">⤢</button>
+          </div>
+          <aside class="minimap-card">
+            <div class="minimap-header">
+              <span>Mini map</span>
+              <p>Click to navigate</p>
+            </div>
+            <canvas
+              id="minimap"
+              width="200"
+              height="160"
+              role="img"
+              aria-label="Organizational chart overview"
+            ></canvas>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="status-bar" id="status-bar">
+        <span id="status-message">No data loaded</span>
+      </footer>
+    </div>
+  </body>
+</html>
